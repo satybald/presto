@@ -63,7 +63,7 @@ public class AuthenticationFilter
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         // skip authentication if non-secure or not configured
-        if (!request.isSecure() || authenticators.isEmpty()) {
+        if (authenticators.isEmpty()) {
             nextFilter.doFilter(request, response);
             return;
         }
@@ -71,7 +71,6 @@ public class AuthenticationFilter
         // try to authenticate, collecting errors and authentication headers
         Set<String> messages = new LinkedHashSet<>();
         Set<String> authenticateHeaders = new LinkedHashSet<>();
-
         for (Authenticator authenticator : authenticators) {
             Principal principal;
             try {

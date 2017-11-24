@@ -27,6 +27,7 @@ import java.util.Set;
 import static com.facebook.presto.server.security.SecurityConfig.AuthenticationType.CERTIFICATE;
 import static com.facebook.presto.server.security.SecurityConfig.AuthenticationType.KERBEROS;
 import static com.facebook.presto.server.security.SecurityConfig.AuthenticationType.LDAP;
+import static com.facebook.presto.server.security.SecurityConfig.AuthenticationType.OAUTH;
 import static com.google.inject.multibindings.Multibinder.newSetBinder;
 import static io.airlift.configuration.ConfigBinder.configBinder;
 
@@ -54,6 +55,9 @@ public class ServerSecurityModule
         if (authTypes.contains(LDAP)) {
             configBinder(binder).bindConfig(LdapConfig.class);
             authBinder.addBinding().to(LdapAuthenticator.class).in(Scopes.SINGLETON);
+        }
+        if (authTypes.contains(OAUTH)) {
+            authBinder.addBinding().to(OAuthAuthenticator.class).in(Scopes.SINGLETON);
         }
     }
 }
